@@ -2,15 +2,20 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BlogController;
+
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
-    // Admin routes
-});
 
 Route::middleware(['auth:sanctum', 'role:author'])->group(function () {
-    // author routes
+    Route::post('/author/blogs', [BlogController::class, 'store']);
+    Route::get('/author/blogs', [BlogController::class, 'myBlogs']);
+});
+
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+    Route::get('/admin/blogs', [BlogController::class, 'allBlogs']);
+    Route::post('/admin/blogs/{id}/status', [BlogController::class, 'changeStatus']);
 });
