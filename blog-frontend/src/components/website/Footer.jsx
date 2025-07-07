@@ -4,7 +4,7 @@ import logo from '../../assets/images/logo2.png';
 
 const Footer = () => {
     return (
-        <footer className="bg-dark text-white pt-5 pb-3">
+        <footer className="text-white pt-5 pb-3" style={{background:"black"}}>
             <div className="container">
                 <div className="row text-center text-lg-start">
 
@@ -34,10 +34,11 @@ const Footer = () => {
                         </ul>
                     </div>
                 </div>
+                <hr />
 
                 {/* Bottom Line */}
                 <div className="text-center mt-3">
-                    <small className="text-muted">&copy; {new Date().getFullYear()} BlogSite. All rights reserved.</small>
+                    <small className="text-white">&copy; {new Date().getFullYear()} E-Blogs. All rights reserved.</small>
                 </div>
             </div>
         </footer>
