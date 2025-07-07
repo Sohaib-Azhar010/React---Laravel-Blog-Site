@@ -1,0 +1,52 @@
+.hero-section {
+  position: relative;
+  height: 90vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-content {
+  z-index: 2;
+  position: relative;
+}
+
+.dynamic-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.diagonal-line {
+  position: absolute;
+  width: 2px;
+  height: 80px;
+  opacity: 0;
+  animation: fallDown 4s linear forwards;
+}
+
+@keyframes fallDown {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(var(--angle));
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120vh);
+    opacity: 0;
+  }
+}
+
