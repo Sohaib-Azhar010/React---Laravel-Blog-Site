@@ -35,8 +35,6 @@ const Footer = () => {
                     </div>
                 </div>
                 <hr />
-
-                {/* Bottom Line */}
                 <div className="text-center mt-3">
                     <small className="text-white">&copy; {new Date().getFullYear()} E-Blogs. All rights reserved.</small>
                 </div>
