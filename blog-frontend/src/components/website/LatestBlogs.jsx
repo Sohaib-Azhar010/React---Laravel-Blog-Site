@@ -22,12 +22,15 @@ const LatestBlogs = () => {
               <div className="blog-image-wrapper">
                 <img src={blog.image} alt={blog.title} className="img-fluid blog-image" />
               </div>
-              <div className="p-3">
+              <div className="card-body d-flex flex-column p-3">
                 <span className="badge bg-dark mb-2">{blog.category}</span>
                 <h5 className="fw-bold mb-2">{blog.title}</h5>
                 <p className="text-muted small mb-0">
                   {blog.content.slice(0, 100)}...
                 </p>
+                <a href={`/blogs/${blog.id}`} className="stretched-link text-dark">
+                  Read more
+                </a>
               </div>
             </div>
           </div>

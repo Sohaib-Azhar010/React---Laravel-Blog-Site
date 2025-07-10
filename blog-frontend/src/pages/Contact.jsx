@@ -1,10 +1,13 @@
 import React from 'react'
+import WebsiteLayout from '../layouts/WebsiteLayout'
+import ContactForm from '../components/website/ContactForm'
 
 const Contact = () => {
   return (
-    <div>
-      <h1>Contact</h1>
-    </div>
+     <WebsiteLayout>
+      <ContactForm/>
+
+    </WebsiteLayout>
   )
 }
 
