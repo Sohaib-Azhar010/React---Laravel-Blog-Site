@@ -162,18 +162,7 @@ const AdminLayout = ({ children }) => {
 
                         {/* User info and actions */}
                         <div className="d-flex align-items-center">
-                            <div className="dropdown me-3">
-                                <button className="btn btn-light dropdown-toggle border-0" type="button" data-bs-toggle="dropdown">
-                                    <i className="bi bi-bell me-1"></i>
-                                    <span className="badge bg-danger badge-sm">3</span>
-                                </button>
-                                <ul className="dropdown-menu dropdown-menu-end">
-                                    <li><h6 className="dropdown-header">Notifications</h6></li>
-                                    <li><a className="dropdown-item" href="#">New blog pending approval</a></li>
-                                    <li><a className="dropdown-item" href="#">New user registered</a></li>
-                                    <li><a className="dropdown-item" href="#">System update available</a></li>
-                                </ul>
-                            </div>
+                            
 
                             <div className="dropdown">
                                 <button className="btn btn-light dropdown-toggle border-0 d-flex align-items-center" type="button" data-bs-toggle="dropdown">
@@ -199,7 +188,7 @@ const AdminLayout = ({ children }) => {
 
                 {/* Main Content Area */}
                 <main className="flex-grow-1 p-4 bg-light">
-                    <div className="container-fluid">
+                    <div className="container-fluid bg-white rounded p-3 border">
                         {children}
                     </div>
                 </main>
