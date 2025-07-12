@@ -11,7 +11,7 @@ const AuthorLayout = ({ children }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const closeSidebar   = () => setOpen(false);
+  const closeSidebar = () => setOpen(false);
   const toggleDropdown = (d) => setActiveDropdown(activeDropdown === d ? null : d);
 
   const handleLogout = async () => {
@@ -20,7 +20,7 @@ const AuthorLayout = ({ children }) => {
   };
 
   const displayName = user?.name || user?.name || 'Author';
-  const roleLabel   = user?.role?.toUpperCase() || 'AUTHOR';
+  const roleLabel = user?.role?.toUpperCase() || 'AUTHOR';
 
   return (
     <div className={`d-flex admin-wrapper ${open ? 'sidebar-open' : ''}`}>
@@ -48,6 +48,19 @@ const AuthorLayout = ({ children }) => {
                   <span className="fw-medium">Dashboard</span>
                 </Link>
               </li>
+              <li className="nav-item mb-1">
+                <Link
+                  to="/author/cetegories/show"
+                  className="nav-link d-flex align-items-center py-3 px-3 rounded-0 border-start border-3 border-transparent hover-item"
+                  onClick={closeSidebar}
+                >
+                  <i className="bi bi-list-ul me-3 text-info" />
+                  <span className="fw-medium">Categories</span>
+                </Link>
+                
+              </li>
+
+
 
               {/* Blogs dropdown */}
               <li className="nav-item mb-1">
@@ -63,33 +76,27 @@ const AuthorLayout = ({ children }) => {
                   <i className={`bi bi-chevron-${activeDropdown === 'blogs' ? 'up' : 'down'} small`} />
                 </div>
 
+                {/* Author dropdown items */}
                 <div className={`dropdown-content ${activeDropdown === 'blogs' ? 'show' : ''}`}>
                   <Link
-                    to="/author/blogs/pending"
+                    to="/author/blogs/show"
                     className="dropdown-item d-flex align-items-center py-2 px-4"
                     onClick={closeSidebar}
                   >
-                    <i className="bi bi-hourglass-split me-2 text-warning" />
-                    <span className="small">Pending Blogs</span>
-                  </Link>
-                  <Link
-                    to="/author/blogs/approved"
-                    className="dropdown-item d-flex align-items-center py-2 px-4"
-                    onClick={closeSidebar}
-                  >
-                    <i className="bi bi-check2-circle me-2 text-success" />
-                    <span className="small">Approved Blogs</span>
+                    <i className="bi bi-list-ul me-2 text-primary" />
+                    <span className="small">My Blogs</span>
                   </Link>
                   <Link
                     to="/author/blogs/create"
                     className="dropdown-item d-flex align-items-center py-2 px-4"
                     onClick={closeSidebar}
                   >
-                    <i className="bi bi-plus-square me-2 text-primary" />
+                    <i className="bi bi-plus-square me-2 text-success" />
                     <span className="small">Create Blog</span>
                   </Link>
                 </div>
               </li>
+
 
             </ul>
           </div>
@@ -116,7 +123,7 @@ const AuthorLayout = ({ children }) => {
             <i className="bi bi-list" />
           </button>
 
-          <h5 className="mb-0 fw-semibold me-auto">Author Dashboard</h5>
+          <h5 className="mb-0 fw-semibold me-auto">AUTHOR DASHBOARD</h5>
 
           {/* User dropdown */}
           <div className="dropdown">

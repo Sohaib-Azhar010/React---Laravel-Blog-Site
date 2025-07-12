@@ -11,8 +11,13 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import SingleBlog from './pages/SingleBlog';
 
-import AdminDashboard   from './components/dashboard/AdminDashboard';
-import AuthorDashboard  from './components/dashboard/AuthorDashboard'; 
+import AdminDashboard from './components/dashboard/AdminDashboard';
+import AuthorDashboard from './components/dashboard/AuthorDashboard';
+import BlogsShow from './components/dashboard/authorPages/BlogsShow';
+import BlogsCreate from './components/dashboard/authorPages/BlogsCreate';
+import CategoriesShow from './components/dashboard/authorPages/CategoriesShow';
+import ShowCategories from './components/dashboard/adminPages/ShowCategories';
+import CreateCategories from './components/dashboard/adminPages/CreateCategories';
 
 function App() {
   return (
@@ -20,12 +25,12 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* public routes */}
-          <Route path="/"       element={<Home />} />
-          <Route path="/blogs"  element={<Blogs />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/blogs" element={<Blogs />} />
           <Route path="/blogs/read" element={<SingleBlog />} />
-          <Route path="/about"  element={<About />} />
+          <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/login"  element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
           {/* unified entry  /dashboard */}
@@ -34,12 +39,17 @@ function App() {
           {/* admin‑only */}
           <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            {/* add other admin routes here */}
+            <Route path="/admin/categories/show" element={<ShowCategories />} />
+            <Route path="/admin/categories/create" element={<CreateCategories />} />
+            
           </Route>
 
           {/* author‑only */}
           <Route element={<ProtectedRoute allowedRoles={['author']} />}>
             <Route path="/author/dashboard" element={<AuthorDashboard />} />
+            <Route path="/author/cetegories/show" element={<CategoriesShow />} />
+            <Route path="/author/blogs/show" element={<BlogsShow />} />
+            <Route path="/author/blogs/create" element={<BlogsCreate />} />
             {/* author routes */}
           </Route>
         </Routes>
