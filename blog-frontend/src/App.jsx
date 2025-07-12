@@ -41,7 +41,6 @@ function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/categories/show" element={<ShowCategories />} />
             <Route path="/admin/categories/create" element={<CreateCategories />} />
-            
           </Route>
 
           {/* author‑only */}
@@ -50,7 +49,6 @@ function App() {
             <Route path="/author/cetegories/show" element={<CategoriesShow />} />
             <Route path="/author/blogs/show" element={<BlogsShow />} />
             <Route path="/author/blogs/create" element={<BlogsCreate />} />
-            {/* author routes */}
           </Route>
         </Routes>
       </BrowserRouter>
