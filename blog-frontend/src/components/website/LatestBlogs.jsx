@@ -1,6 +1,7 @@
 import React from 'react';
 import '../../assets/css/FeaturedBlogs.css';
 import img from '../../assets/images/hero.jpg';
+import { Link } from 'react-router-dom';
 
 const blog = {
   title: 'Mastering React in 30 Days',
@@ -28,9 +29,7 @@ const LatestBlogs = () => {
                 <p className="text-muted small mb-0">
                   {blog.content.slice(0, 100)}...
                 </p>
-                <a href={`/blogs/${blog.id}`} className="stretched-link text-dark">
-                  Read more
-                </a>
+                <Link className='text-dark' to='/blogs'>Read More</Link>
               </div>
             </div>
           </div>

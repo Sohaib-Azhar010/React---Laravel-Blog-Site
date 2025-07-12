@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // use <a> if not using React Router
+import { Link, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import api from '../../assets/api';
+import { useAuth } from '../dashboard/AuthContext';
 
 const RegisterForm = () => {
   const [form, setForm] = useState({
@@ -7,126 +11,181 @@ const RegisterForm = () => {
     email: '',
     password: '',
     confirm: '',
+    role: 'author',       // default role
+    author_name: '',
   });
-  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic client‑side validation
-    if (!form.name || !form.email || !form.password || !form.confirm) {
-      setError('Please fill in all fields.');
-      return;
+    if (!form.email || !form.password || !form.confirm) {
+      return toast.error('Please fill all required fields.');
     }
     if (form.password !== form.confirm) {
-      setError('Passwords do not match.');
-      return;
+      return toast.error('Passwords do not match.');
+    }
+    if (form.role === 'author' && !form.author_name.trim()) {
+      return toast.error('Author name is required for Author role.');
     }
 
-    setError('');
-    // TODO: send `form` to your Laravel API
-    console.log('Registering user:', form);
+    try {
+      setLoading(true);
+
+      const res = await api.post('/register', {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        role: form.role,
+        author_name: form.role === 'author' ? form.author_name : null,
+      });
+
+      const { user, access_token } = res.data;
+      login(user, access_token);
+
+      toast.success('Registration successful! Redirecting…');
+      setTimeout(() => navigate('/dashboard'), 1500);
+    } catch (err) {
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data?.errors?.email?.[0] ||
+        'Registration failed';
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div
-      className="container d-flex justify-content-center align-items-center mt-5"
-      style={{ minHeight: '80vh' }}
-    >
+    <>
+      <ToastContainer position="top-center" />
       <div
-        className="card shadow-sm p-4"
-        style={{ maxWidth: '450px', width: '100%' }}
+        className="container d-flex justify-content-center align-items-center mt-5"
+        style={{ minHeight: '80vh' }}
       >
-        <h3 className="text-center mb-4">Create Account</h3>
+        <div className="card shadow-sm p-4" style={{ maxWidth: 450, width: '100%' }}>
+          <h3 className="text-center mb-4">Create Account</h3>
 
-        {error && <div className="alert alert-danger py-2">{error}</div>}
+          <form onSubmit={handleSubmit}>
+            {/* Name */}
+            <div className="mb-3">
+              <label htmlFor="regFullName" className="form-label fw-semibold">
+                Full Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="regFullName"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="regName" className="form-label fw-semibold">
-              Name
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="regName"
-              name="name"
-              placeholder="Your full name"
-              value={form.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            {/* Email */}
+            <div className="mb-3">
+              <label htmlFor="regEmail" className="form-label fw-semibold">
+                Email
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                id="regEmail"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-          <div className="mb-3">
-            <label htmlFor="regEmail" className="form-label fw-semibold">
-              Email
-            </label>
-            <input
-              type="email"
-              className="form-control"
-              id="regEmail"
-              name="email"
-              placeholder="name@example.com"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            {/* Role select */}
+            <div className="mb-3">
+              <label className="form-label fw-semibold">Role</label>
+              <select
+                name="role"
+                className="form-select"
+                value={form.role}
+                onChange={handleChange}
+              >
+                <option value="author">Author</option>
+                {/* <option value="admin">Admin</option> */}
+              </select>
+            </div>
 
-          <div className="mb-3">
-            <label htmlFor="regPassword" className="form-label fw-semibold">
-              Password
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              id="regPassword"
-              name="password"
-              placeholder="Password"
-              value={form.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            {/* Author name (conditional) */}
+            {form.role === 'author' && (
+              <div className="mb-3">
+                <label className="form-label fw-semibold">Author Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="author_name"
+                  value={form.author_name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            )}
 
-          <div className="mb-4">
-            <label
-              htmlFor="regConfirm"
-              className="form-label fw-semibold"
+            {/* Password */}
+            <div className="mb-3">
+              <label htmlFor="regPassword" className="form-label fw-semibold">
+                Password
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                id="regPassword"
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Confirm */}
+            <div className="mb-4">
+              <label htmlFor="regConfirm" className="form-label fw-semibold">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                id="regConfirm"
+                name="confirm"
+                value={form.confirm}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="btn btn-dark w-100"
+              disabled={loading}
             >
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              id="regConfirm"
-              name="confirm"
-              placeholder="Confirm password"
-              value={form.confirm}
-              onChange={handleChange}
-              required
-            />
+              {loading ? 'Creating…' : 'Sign Up'}
+            </button>
+          </form>
+
+          <div className="text-center mt-3">
+            <span className="small text-muted">
+              Already have an account?{' '}
+              <Link to="/login" className="text-decoration-none">
+                Login
+              </Link>
+            </span>
           </div>
-
-          <button type="submit" className="btn btn-dark px-4 py-2 rounded-pill fw-semibold w-100">
-            Sign Up
-          </button>
-        </form>
-
-        <div className="text-center mt-3">
-          <span className="small text-muted">
-            Already have an account?{' '}
-            <Link to="/login" className="text-decoration-none">
-              Login
-            </Link>
-          </span>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

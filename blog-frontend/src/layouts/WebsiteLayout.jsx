@@ -5,9 +5,11 @@ import Footer from '../components/website/Footer';
 
 const WebsiteLayout = ({ children }) => {
     return (
-        <> 
+        <>
             <Header />
-            <main>{children}</main>
+            <main>
+                {children}
+            </main>
             <Newsletter />
             <Footer />
         </>

@@ -44,7 +44,7 @@ const Header = () => {
                 <Link className="nav-link" to="/about">About</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" style={{marginRight:'160px'}} to="/contact">Contact</Link>
+                <Link className="nav-link" style={{marginRight:'120px'}} to="/contact">Contact</Link>
               </li>
             </ul>
 
