@@ -12,21 +12,27 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
+            'title'   => 'required|string|max:255',
+            'content' => 'required',
+            'image'   => 'nullable|image|max:2048',
         ]);
+
+        $path = $request->file('image')
+            ? $request->file('image')->store('blogs', 'public')
+            : null;
 
         $blog = Blog::create([
-            'user_id' => Auth::id(), // using Facade for clarity
-            'title' => $request->title,
+            'user_id' => $request->user()->id,
+            'title'   => $request->title,
             'content' => $request->content,
+            'image'   => $path,
+            // status defaults to 'pending'
         ]);
 
-        return response()->json([
-            'message' => 'Blog submitted for review',
-            'blog' => $blog,
-        ]);
+        return response()->json($blog, 201);
     }
+
+
 
     // Get blogs for logged-in author
     public function myBlogs()

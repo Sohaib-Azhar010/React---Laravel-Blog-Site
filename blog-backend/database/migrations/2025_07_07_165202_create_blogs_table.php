@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
+            $table->string('image')->nullable(); // ← remove 'after'
             $table->text('content');
             $table->enum('status', ['pending', 'approved', 'disabled'])->default('pending');
             $table->timestamps();
