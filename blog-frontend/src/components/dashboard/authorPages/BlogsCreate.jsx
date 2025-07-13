@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Editor } from '@tinymce/tinymce-react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -7,22 +7,33 @@ import api from '../../../assets/api';
 import AuthorLayout from '../../../layouts/AuthorLayout';
 
 const BlogsCreate = () => {
-  const [title, setTitle]       = useState('');
-  const [image, setImage]       = useState(null);
-  const [content, setContent]   = useState('');
-  const [saving, setSaving]     = useState(false);
+  const [title,       setTitle]       = useState('');
+  const [image,       setImage]       = useState(null);
+  const [content,     setContent]     = useState('');
+  const [categoryId,  setCategoryId]  = useState('');
+  const [categories,  setCategories]  = useState([]);
+  const [saving,      setSaving]      = useState(false);
   const navigate = useNavigate();
+
+  /* Load categories once */
+  useEffect(() => {
+    api.get('/api/author/categories')
+       .then(res => setCategories(res.data))
+       .catch(()   => toast.error('Failed to load categories'));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!title.trim())   return toast.error('Title is required');
-    if (!content.trim()) return toast.error('Content is required');
+    if (!title.trim())        return toast.error('Title is required');
+    if (!categoryId)          return toast.error('Please select a category');
+    if (!content.trim())      return toast.error('Content is required');
 
     try {
       setSaving(true);
       const fd = new FormData();
-      fd.append('title', title);
-      fd.append('content', content);
+      fd.append('title',       title);
+      fd.append('content',     content);
+      fd.append('category_id', categoryId);
       if (image) fd.append('image', image);
 
       await api.post('/api/author/blogs', fd, {
@@ -57,6 +68,24 @@ const BlogsCreate = () => {
             />
           </div>
 
+          {/* Category select */}
+          <div className="mb-3">
+            <label className="form-label fw-medium">Category</label>
+            <select
+              className="form-select"
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
+              required
+            >
+              <option value="">-- Select category --</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Image */}
           <div className="mb-3">
             <label className="form-label fw-medium">Cover Image (optional)</label>
@@ -72,7 +101,7 @@ const BlogsCreate = () => {
           <div className="mb-4">
             <label className="form-label fw-medium d-block">Content</label>
             <Editor
-              apiKey="yjmiwj6b7bvz7vsn7w6qeoa4e7epfecfftb5iliiokqy3vdo"      // or your Tiny cloud key
+              apiKey="yjmiwj6b7bvz7vsn7w6qeoa4e7epfecfftb5iliiokqy3vdo"
               value={content}
               init={{
                 height: 350,
@@ -81,7 +110,7 @@ const BlogsCreate = () => {
                 toolbar:
                   'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | removeformat',
               }}
-              onEditorChange={(newValue) => setContent(newValue)}
+              onEditorChange={(val) => setContent(val)}
             />
           </div>
 

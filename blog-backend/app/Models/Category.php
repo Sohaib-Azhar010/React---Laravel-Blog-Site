@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
-     use HasFactory;
+    use HasFactory;
 
     protected $fillable = ['name', 'status'];
+
+    public function blogs()
+    {
+        return $this->belongsToMany(Blog::class, 'blog_category');
+    }
 }

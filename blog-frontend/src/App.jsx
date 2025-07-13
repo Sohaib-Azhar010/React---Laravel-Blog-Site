@@ -23,6 +23,7 @@ import EditCategories from './components/dashboard/adminPages/EditCategories';
 
 
 import { Editor } from '@tinymce/tinymce-react';
+import BlogsEdit from './components/dashboard/authorPages/BlogsEdit';
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
               <Route path="/author/cetegories/show" element={<CategoriesShow />} />
               <Route path="/author/blogs/show" element={<BlogsShow />} />
               <Route path="/author/blogs/create" element={<BlogsCreate />} />
+              {/* <Route path="/author/blogs/:id/edit" element={<BlogsEdit />} />  */}
             </Route>
           </Routes>
         </BrowserRouter>

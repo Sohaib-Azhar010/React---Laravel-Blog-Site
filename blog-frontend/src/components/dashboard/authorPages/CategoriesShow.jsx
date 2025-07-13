@@ -11,7 +11,7 @@ const CategoriesShow = () => {
   const loadCategories = async () => {
     try {
       setLoading(true);
-      const res = await api.get('/api/categories');  // author route
+      const res = await api.get('/api/author/categories');  // author route
       setCategories(res.data);
     } catch (_) {
       toast.error('Failed to load categories');

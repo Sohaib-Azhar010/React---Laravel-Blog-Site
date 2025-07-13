@@ -17,18 +17,16 @@ Route::post('/login',    [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])
       ->middleware('auth:sanctum');
 
-Route::middleware(['auth:sanctum', 'role:author'])->group(function () {
-    Route::post('/author/blogs', [BlogController::class, 'store']);
-    Route::get('/author/blogs', [BlogController::class, 'myBlogs']);
+Route::middleware(['auth:sanctum', 'role:author'])->prefix('author')->group(function () {
+    Route::get('blogs',          [BlogController::class,'myBlogs']);
+    Route::post('blogs',         [BlogController::class,'store']);
+    Route::get('blogs/{blog}',   [BlogController::class,'show']);       // fetch one for edit
+    Route::put('blogs/{blog}',   [BlogController::class,'update']);     // edit
+    Route::delete('blogs/{blog}',[BlogController::class,'destroy']);
     Route::get('/categories', [CategoryController::class, 'index']);
 
 });
 
-// Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
-//     Route::get('/admin/blogs', [BlogController::class, 'allBlogs']);
-//     Route::post('/admin/blogs/{id}/status', [BlogController::class, 'changeStatus']);
-//     Route::apiResource('/categories', CategoryController::class);
-// });
 
 // routes/api.php  – admin group
 Route::middleware(['auth:sanctum','role:admin'])->prefix('admin')->group(function () {
